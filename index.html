@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Timer</title>
+    <style>
+        /* Basic styling to center content */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #fff;
+            text-align: center;
+        }
+
+        /* Main container */
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 400px;
+        }
+
+        h2 {
+            color: #2a7e2d;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        /* Styling the input and button */
+        input {
+            padding: 10px;
+            font-size: 16px;
+            width: 100%;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #2a7e2d;
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2a7e2d;
+        }
+
+        /* Timer display */
+        .timer {
+            font-size: 3rem;
+            margin-top: 20px;
+            color: #2a7e2d;
+            font-weight: bold;
+        }
+
+        /* Style for time's up message */
+        .times-up {
+            color: #f44336;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Countdown Timer</h2>
+        <input type="number" id="duration" placeholder="Enter seconds" min="1">
+        <button onclick="startTimer()">Start Timer</button>
+        <div class="timer" id="timer">00:00:000</div>
+    </div>
+
+    <script>
+        let interval;
+        function startTimer() {
+            clearInterval(interval);
+            let time = parseInt(document.getElementById("duration").value) || 0;
+            let milliseconds = 0;
+            const timerDisplay = document.getElementById("timer");
+
+            if (time <= 0) {
+                timerDisplay.textContent = "Please enter a valid time!";
+                timerDisplay.classList.add("times-up");
+                return;
+            }
+
+            timerDisplay.classList.remove("times-up");
+
+            interval = setInterval(() => {
+                if (time <= 0 && milliseconds <= 0) {
+                    clearInterval(interval);
+                    timerDisplay.textContent = "Time's up!";
+                    timerDisplay.classList.add("times-up");
+                } else {
+                    if (milliseconds <= 0) {
+                        if (time > 0) {
+                            time--;
+                            milliseconds = 99;
+                        }
+                    } else {
+                        milliseconds--;
+                    }
+
+                    const minutes = Math.floor(time / 60);
+                    const seconds = time % 60;
+                    const formattedMilliseconds = milliseconds < 10 ? `0${milliseconds}0` : `${milliseconds}0`;
+
+                    timerDisplay.textContent = `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}:${formattedMilliseconds}`;
+                }
+            }, 10);
+        }
+    </script>
+
+</body>
+</html>
